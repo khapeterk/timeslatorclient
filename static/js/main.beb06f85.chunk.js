@@ -1,0 +1,2 @@
+(this.webpackJsonptimeslatorclient=this.webpackJsonptimeslatorclient||[]).push([[0],{10:function(t,n,e){},11:function(t,n,e){"use strict";e.r(n);var c=e(0),i=e(1),o=e.n(i),r=e(3),s=e.n(r);e(9),e(10);var a=function(){return Object(c.jsx)("div",{children:"This is App component"})};s.a.render(Object(c.jsx)(o.a.StrictMode,{children:Object(c.jsx)(a,{})}),document.getElementById("root"))},9:function(t,n,e){}},[[11,1,2]]]);
+//# sourceMappingURL=main.beb06f85.chunk.js.map
