@@ -1,6 +1,6 @@
 import './App.css';
-import moment from 'moment-timezone';
 import { useState } from 'react';
+import { buildMomentZone, getUSTimeZones, getZoneOffset, guessCurrentTimeZone, updateLocalStorage } from './utils';
 
 const cardStyle = { display: 'inline-grid', border: '1px solid black', borderRadius: '10px', padding: '10px', gridTemplateColumns: '1fr 1fr auto' };
 const cardHeadersStyle = { fontSize: 'medium', textAlign: 'center', padding: '0 10px' };
@@ -26,10 +26,10 @@ function App() {
 function DisplayZones(props) {
     let { showMoreZones } = props;
 
-    const fullZoneList = moment.tz.zonesForCountry('US').sort(arraySortCompareOffsets);
+    const fullZoneList = getUSTimeZones();
     const [moreZones, setMoreZones] = useState(new Set(fullZoneList));
     const [addedZones, setAddedZones] = useState(new Set());
-    const currentTimeZone = moment.tz.guess();
+    const currentTimeZone = guessCurrentTimeZone();
 
     if (addedZones.size < 1) {
         const addedZonesInStorage = localStorage.getItem('addedZones');
@@ -96,25 +96,6 @@ function DisplayZones(props) {
     )
 }
 
-function arraySortCompareOffsets(a, b) {
-    if (moment().tz(a).utcOffset() < moment().tz(b).utcOffset()) {
-        return 1;
-    }
-    if (moment().tz(a).utcOffset() > moment().tz(b).utcOffset()) {
-        return -1;
-    }
-    return 0;
-}
-
-function updateLocalStorage(addedZones) {
-    if (addedZones.size === 0) {
-        localStorage.removeItem('addedZones');
-    }
-    if (addedZones.size > 0) {
-        localStorage.setItem('addedZones', JSON.stringify(Array.from(addedZones)));
-    }
-}
-
 function RenderMoreZonesButton(props) {
     const buttonStyle = { fontSize: 'large' };
     const { toggleShowMoreZones, showMoreZones } = props;
@@ -131,10 +112,10 @@ function DisplayAddedZones(props) {
     const [ timeZone, setTimeZone ] = useState(currentTimeZone);
     const [ dateTime, setDateTime ] = useState(new Date().toISOString());
     const addedZonesComponents = [];
-    for (const zone of addedZones.values()) {
-        const removeZoneOnClick = () => { removeZone(zone); }
+    for (const targetZone of addedZones.values()) {
+        const removeZoneOnClick = () => { removeZone(targetZone); }
         addedZonesComponents.push(
-            <DisplayAddedZone key={zone} dateTime={dateTime} timeZone={timeZone} zone={zone} removeZoneOnClick={removeZoneOnClick} />
+            <DisplayAddedZone key={targetZone} newMoment={buildMomentZone(dateTime, timeZone)} targetZone={targetZone} removeZoneOnClick={removeZoneOnClick} />
         )
     }
     const zoneListOptions = [];
@@ -171,13 +152,13 @@ function DisplayAddedZones(props) {
 }
 
 function DisplayAddedZone(props) {
-    const { dateTime, timeZone, zone, removeZoneOnClick } = props;
-    const dateTimeInZone = moment.tz(dateTime, timeZone).tz(zone);
+    const { newMoment, targetZone, removeZoneOnClick } = props;
+    const dateTimeInZone = newMoment.tz(targetZone);
     return (
         <div style={cardStyle}>
             <div>
                 <div style={cardHeadersStyle}>Zone</div>
-                <div style={cardContentsStyle}>{zone}</div>
+                <div style={cardContentsStyle}>{targetZone}</div>
             </div>
             <div>
                 <div style={cardHeadersStyle}>Time</div>
@@ -218,7 +199,7 @@ function DisplayMoreZone(props) {
             </div>
             <div>
                 <div style={cardHeadersStyle}>Offset</div>
-                <div style={cardContentsStyle}>{moment().tz(zone).utcOffset() / 60}</div>
+                <div style={cardContentsStyle}>{getZoneOffset(zone)}</div>
             </div>
             <div>
                 <button onClick={addZoneOnClick}>+</button>
