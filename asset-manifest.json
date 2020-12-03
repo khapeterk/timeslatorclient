@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/timeslatorclient/static/css/main.ea1455b2.chunk.css",
-    "main.js": "/timeslatorclient/static/js/main.b7d26d00.chunk.js",
-    "main.js.map": "/timeslatorclient/static/js/main.b7d26d00.chunk.js.map",
+    "main.js": "/timeslatorclient/static/js/main.4ac824d3.chunk.js",
+    "main.js.map": "/timeslatorclient/static/js/main.4ac824d3.chunk.js.map",
     "runtime-main.js": "/timeslatorclient/static/js/runtime-main.04ae8e04.js",
     "runtime-main.js.map": "/timeslatorclient/static/js/runtime-main.04ae8e04.js.map",
     "static/js/2.6229030c.chunk.js": "/timeslatorclient/static/js/2.6229030c.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.04ae8e04.js",
     "static/js/2.6229030c.chunk.js",
     "static/css/main.ea1455b2.chunk.css",
-    "static/js/main.b7d26d00.chunk.js"
+    "static/js/main.4ac824d3.chunk.js"
   ]
 }
